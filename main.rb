@@ -42,5 +42,19 @@ module Enumerable
     my_each { |x| return true if yield(x) }
     false
   end
+  def my_none?(*arg)
+    unless block_given?
+      if arg.instance_of?(Regexp)
+        my_each { |x| return false if arg.match?(x.to_s) }
+      elsif arg.instance_of?(Class)
+        my_each { |x| return false if x.is_a? arg }
+      else
+        my_each { |x| return false if x }
+      end
+      return true
+    end
+    my_each { |i| return false if yield(i) }
+    true
+  end
 
 end
