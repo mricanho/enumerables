@@ -80,4 +80,27 @@ module Enumerable
     arr
   end
 
+  def my_inject(*arg)
+    new_array = to_a
+    total = arg[0]
+    if arg[0].instance_of?(Symbol)
+      total = new_array[0]
+      new_array = new_array[1..-1]
+      new_array.my_each { |x| total = total.send(arg[0], x) }
+    elsif arg[0].class < Numeric && arg[1].class != Symbol
+      new_array.my_each { |x| total = yield(total, x) }
+    elsif arg[0].class < Numeric && arg[1].instance_of?(Symbol)
+      new_array.my_each { |x| total = total.send(arg[1], x) }
+    else
+      total = new_array[0]
+      new_array = new_array[1..-1]
+      new_array.my_each { |x| total = yield(total, x) }
+    end
+    total
+  end
+
+  def multiply_els(arg)
+    arg.my_inject(:*)
+  end
+
 end
