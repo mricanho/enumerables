@@ -14,4 +14,10 @@ module Enumerable
     end
     self
   end
+  def my_select
+    result = []
+    my_each { |x| result << x if yield(x) }
+    result
+  end
+
 end
