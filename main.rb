@@ -1,3 +1,4 @@
+# rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 module Enumerable
   def my_each
     x = 0
@@ -110,3 +111,5 @@ module Enumerable
     arg.my_inject(:*)
   end
 end
+
+# rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
