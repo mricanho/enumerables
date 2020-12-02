@@ -68,5 +68,16 @@ module Enumerable
     my_each { |x| count += 1 if yield(x) }
     count
   end
+  def my_map(proc = nil)
+    return to_enum(:my_map) unless block_given? || !proc.nil?
+
+    arr = []
+    if proc.nil?
+      to_a.my_each { |item| arr << yield(item) }
+    else
+      to_a.my_each { |item| arr << proc.call(item) }
+    end
+    arr
+  end
 
 end
