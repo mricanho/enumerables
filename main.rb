@@ -56,5 +56,17 @@ module Enumerable
     my_each { |i| return false if yield(i) }
     true
   end
+  def my_count(*arg)
+    count = 0
+    unless block_given?
+      if include?(arg)
+        my_each { |x| count += 1 if x == arg }
+        return count
+      end
+      return arg.length
+    end
+    my_each { |x| count += 1 if yield(x) }
+    count
+  end
 
 end
