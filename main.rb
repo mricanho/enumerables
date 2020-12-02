@@ -28,5 +28,19 @@ module Enumerable
     my_each { |i| count += 1 if yield(i) }
     count == length
   end
+  def my_any?(number = 0)
+    unless block_given?
+      if number.instance_of?(Class)
+        my_each { |x| return true if x.is_a? number }
+      elsif number.instance_of?(Regexp)
+        my_each { |x| return true if number.match?(x.to_s) }
+      elsif [nil, false].include?(number)
+        my_each { |x| return true if x == number }
+      end
+      return false
+    end
+    my_each { |x| return true if yield(x) }
+    false
+  end
 
 end
