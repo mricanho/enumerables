@@ -36,9 +36,9 @@ module Enumerable
   def my_all?(arg = UNDEFINED)
     unless block_given?
       if arg != UNDEFINED
-        my_each { |i| return false unless arg === i }
+        my_each { |x| return false unless arg === x }
       else
-        my_each { |i| return false unless i }
+        my_each { |x| return false unless x }
       end
       return true
     end
@@ -46,18 +46,16 @@ module Enumerable
     true
   end
 
-  def my_any?(number = 0)
+  def my_any?(arg = UNDEFINED, &block)
     unless block_given?
-      if number.instance_of?(Class)
-        my_each { |x| return true if x.is_a? number }
-      elsif number.instance_of?(Regexp)
-        my_each { |x| return true if number.match?(x.to_s) }
-      elsif [nil, false].include?(number)
-        my_each { |x| return true if x == number }
+      if arg != UNDEFINED
+        my_each { |x| return true if arg === x }
+      else
+        my_each { |x| return true if x }
       end
       return false
     end
-    my_each { |x| return true if yield(x) }
+    my_each { |i| return true if block.call(i) }
     false
   end
 
