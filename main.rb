@@ -1,5 +1,6 @@
-# rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/ModuleLength
+# rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/ModuleLength, Style/CaseEquality
 module Enumerable
+  UNDEFINED = Object.new
   def my_each
     return to_enum(:my_each) unless block_given?
 
@@ -32,14 +33,17 @@ module Enumerable
     result
   end
 
-  def my_all?(*)
+  def my_all?(arg = UNDEFINED)
     unless block_given?
-      my_each { |i| return false if i.nil? || i == false }
+      if arg != UNDEFINED
+        my_each { |i| return false unless arg === i }
+      else
+        my_each { |i| return false unless i }
+      end
       return true
     end
-    count = 0
-    my_each { |i| count += 1 if yield(i) }
-    count == length
+    my_each { |i| return false unless yield(i) }
+    true
   end
 
   def my_any?(number = 0)
@@ -117,7 +121,7 @@ module Enumerable
   end
 end
 
-# rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/ModuleLength
+# rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/ModuleLength, Style/CaseEquality
 
 def multiply_els(arg)
   arg.my_inject(:*)
