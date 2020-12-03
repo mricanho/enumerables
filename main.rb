@@ -61,7 +61,7 @@ module Enumerable
     !my_any?(arg, &block)
   end
 
-  def my_count(arg = UNDEFINED)
+  def my_count(arg = nil)
     count = 0
     if block_given?
       to_a.my_each { |x| count += 1 if yield(x) }
