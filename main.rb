@@ -1,4 +1,4 @@
-# rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/ModuleLength, Style/CaseEquality
+# rubocop: disable Style/CaseEquality
 module Enumerable
   UNDEFINED = Object.new
   def my_each
@@ -59,31 +59,25 @@ module Enumerable
     false
   end
 
-  def my_none?(*arg)
-    unless block_given?
-      if arg.instance_of?(Regexp)
-        my_each { |x| return false if arg.match?(x.to_s) }
-      elsif arg.instance_of?(Class)
-        my_each { |x| return false if x.is_a? arg }
-      else
-        my_each { |x| return false if x }
-      end
-      return true
-    end
-    my_each { |i| return false if yield(i) }
-    true
+  def my_none?(arg = UNDEFINED, &block)
+    !my_any?(arg, &block)
   end
 
-  def my_count(*arg)
+  def my_count(arg = UNDEFINED)
+    arr = if arg.is_a? String
+            split('')
+          else
+            arg
+          end
     count = 0
     unless block_given?
-      if include?(arg)
-        my_each { |x| count += 1 if x == arg }
+      if arg != UNDEFINED
+        arr.my_each { |x| count += 1 if x == arg }
         return count
       end
-      return arg.length
+      return length
     end
-    my_each { |x| count += 1 if yield(x) }
+    my_each { |i| count += 1 if yield(i) }
     count
   end
 
@@ -119,7 +113,7 @@ module Enumerable
   end
 end
 
-# rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/ModuleLength, Style/CaseEquality
+# rubocop: enable Style/CaseEquality
 
 def multiply_els(arg)
   arg.my_inject(:*)
