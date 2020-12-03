@@ -4,25 +4,23 @@ module Enumerable
   def my_each
     return to_enum(:my_each) unless block_given?
 
-    arr = to_a
     x = 0
-    while x < arr.length
-      yield(arr[x])
+    while x < to_a.length
+      yield to_a[x]
       x += 1
     end
-    arr
+    self
   end
 
   def my_each_with_index
     return to_enum(:my_each_with_index) unless block_given?
 
-    arr = to_a
     i = 0
-    while i < arr.length
-      yield(arr[i], i)
+    while i < to_a.length
+      yield(to_a[i], i)
       i += 1
     end
-    arr
+    self
   end
 
   def my_select
@@ -118,3 +116,19 @@ end
 def multiply_els(arg)
   arg.my_inject(:*)
 end
+
+ARRAY_SIZE = 100
+LOWEST_VALUE = 0
+HIGHEST_VALUE = 9
+
+array = Array.new(ARRAY_SIZE) { rand(LOWEST_VALUE...HIGHEST_VALUE) } 
+block = proc { |num| num < (LOWEST_VALUE + HIGHEST_VALUE) / 2 } 
+words = %w[dog door rod blade] 
+range = Range.new(5, 50) 
+hash = { a: 1, b: 2, c: 3, d: 4, e: 5 } 
+numbers = [1, 2i, 3.14] 
+array_clone = array.clone 
+
+p range.my_each(&block)
+p range.my_each_with_index(&block)
+p array.my_count(LOWEST_VALUE)
