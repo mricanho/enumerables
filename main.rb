@@ -62,20 +62,14 @@ module Enumerable
   end
 
   def my_count(arg = UNDEFINED)
-    arr = if arg.is_a? String
-            split('')
-          else
-            arg
-          end
     count = 0
-    unless block_given?
-      if arg != UNDEFINED
-        arr.my_each { |x| count += 1 if x == arg }
-        return count
-      end
-      return length
+    if block_given?
+      to_a.my_each { |x| count += 1 if yield(x) }
+    elsif !block_given? && arg.nil?
+      count = to_a.length
+    else
+      count = to_a.my_select { |x| x == arg }.length
     end
-    my_each { |i| count += 1 if yield(i) }
     count
   end
 
@@ -116,19 +110,3 @@ end
 def multiply_els(arg)
   arg.my_inject(:*)
 end
-
-ARRAY_SIZE = 100
-LOWEST_VALUE = 0
-HIGHEST_VALUE = 9
-
-array = Array.new(ARRAY_SIZE) { rand(LOWEST_VALUE...HIGHEST_VALUE) } 
-block = proc { |num| num < (LOWEST_VALUE + HIGHEST_VALUE) / 2 } 
-words = %w[dog door rod blade] 
-range = Range.new(5, 50) 
-hash = { a: 1, b: 2, c: 3, d: 4, e: 5 } 
-numbers = [1, 2i, 3.14] 
-array_clone = array.clone 
-
-p range.my_each(&block)
-p range.my_each_with_index(&block)
-p array.my_count(LOWEST_VALUE)
