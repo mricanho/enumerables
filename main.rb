@@ -1,11 +1,15 @@
 # rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 module Enumerable
   def my_each
+    return to_enum(:my_each) unless block_given?
+
+    arr = to_a
     x = 0
-    while x < length
-      yield(self[x])
+    while x < arr.length
+      yield(arr[x])
       x += 1
     end
+    arr
   end
 
   def my_each_with_index
