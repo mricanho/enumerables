@@ -110,10 +110,10 @@ module Enumerable
     end
     total
   end
-
-  def multiply_els(arg)
-    arg.my_inject(:*)
-  end
 end
 
 # rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+
+def multiply_els(arg)
+  arg.my_inject(:*)
+end
