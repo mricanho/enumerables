@@ -1,4 +1,4 @@
-# rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+# rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/ModuleLength
 module Enumerable
   def my_each
     return to_enum(:my_each) unless block_given?
@@ -22,6 +22,8 @@ module Enumerable
   end
 
   def my_select
+    return to_enum(:my_select) unless block_given?
+
     result = []
     my_each { |x| result << x if yield(x) }
     result
@@ -112,7 +114,7 @@ module Enumerable
   end
 end
 
-# rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+# rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/ModuleLength
 
 def multiply_els(arg)
   arg.my_inject(:*)
