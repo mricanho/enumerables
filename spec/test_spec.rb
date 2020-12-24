@@ -103,4 +103,4 @@ describe Enumerable do
   end
 end
 
-# rubocop:enable, Layout/LineLength
+# rubocop:enable Layout/LineLength
