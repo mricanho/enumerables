@@ -1,4 +1,3 @@
-# rubocop:disable Layout/LineLength
 # spec/test_spec.rb
 require './main'
 
@@ -15,7 +14,7 @@ describe Enumerable do
   end
 
   describe '#my_each_with_index' do
-    it 'Returns the same array and print the result on each element in the array according the block but it accesses to the index of each element ' do
+    it 'Returns the same array and it accesses to the index of each element ' do
       expect(array.my_each_with_index { |num, index| print "This #{num} has index number #{index}" }).to eql(array)
     end
 
@@ -74,7 +73,7 @@ describe Enumerable do
       expect(array.my_count(5)).to eql(0)
     end
 
-    it 'If a block is given, it returns the total number of array elements that return true from the given condition in this block' do
+    it 'If a block, it returns the total number of array elements that return true' do
       expect(array.my_count(&:even?)).to eql(2)
       expect(array.my_count { |num| num % 3 == 0 }).to eql(1)
       expect(array.my_count { |num| num % 5 == 0 }).to eql(0)
@@ -97,10 +96,8 @@ describe Enumerable do
       expect(array.my_inject { |acc, num| acc + num }).to eql(10)
     end
 
-    it 'If an argument is given, it returns a value according to the given in the block starting with argument as an accumulator' do
+    it 'If an argument is given, starting with argument as an accumulator' do
       expect(array.my_inject(2) { |acc, num| acc + num }).to eql(12)
     end
   end
 end
-
-# rubocop:enable Layout/LineLength
